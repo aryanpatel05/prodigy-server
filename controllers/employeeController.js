@@ -1,5 +1,5 @@
-const Employee = require('../models/Employee');
-const Counter = require('../models/Counter');
+const Employee = require("../models/Employee");
+const Counter = require("../models/Counter");
 
 // Function to get the next sequence value for the given counter
 const getNextSequenceValue = async (sequenceName) => {
@@ -17,24 +17,24 @@ exports.createEmployee = async (req, res) => {
 
   // Validate input
   if (!name || !email || !phone || isActive === undefined) {
-    return res.status(400).json({ msg: 'All fields are required' });
+    return res.status(400).json({ msg: "All fields are required" });
   }
 
   try {
-    const id = await getNextSequenceValue('employeeId');
+    const id = await getNextSequenceValue("employeeId");
     const newEmployee = new Employee({
       id,
       name,
       email,
       phone,
-      isActive
+      isActive,
     });
 
     const employee = await newEmployee.save();
     res.json(employee);
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server error');
+    res.status(500).send("Server error");
   }
 };
 
@@ -45,7 +45,7 @@ exports.getAllEmployees = async (req, res) => {
     res.json(employees);
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server error');
+    res.status(500).send("Server error");
   }
 };
 
@@ -55,12 +55,12 @@ exports.deleteEmployee = async (req, res) => {
     const { id } = req.params;
     const employee = await Employee.findOneAndDelete({ id });
     if (!employee) {
-      return res.status(404).json({ msg: 'Employee not found' });
+      return res.status(404).json({ msg: "Employee not found" });
     }
-    res.status(200).json({ message: 'Employee deleted successfully' });
+    res.status(200).json({ message: "Employee deleted successfully" });
   } catch (err) {
     console.error(err.message);
-    res.status(500).json({ error: 'Failed to delete employee' });
+    res.status(500).json({ error: "Failed to delete employee" });
   }
 };
 
@@ -72,7 +72,7 @@ exports.updateEmployee = async (req, res) => {
 
     // Validate input
     if (!name || !email || !phone || isActive === undefined) {
-      return res.status(400).json({ msg: 'All fields are required' });
+      return res.status(400).json({ msg: "All fields are required" });
     }
 
     const updatedEmployee = await Employee.findOneAndUpdate(
@@ -82,12 +82,12 @@ exports.updateEmployee = async (req, res) => {
     );
 
     if (!updatedEmployee) {
-      return res.status(404).json({ msg: 'Employee not found' });
+      return res.status(404).json({ msg: "Employee not found" });
     }
 
     res.json(updatedEmployee);
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server error');
+    res.status(500).send("Server error");
   }
 };
